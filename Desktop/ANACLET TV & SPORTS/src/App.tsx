@@ -95,6 +95,7 @@ function useSportsNews(league: string) {
 function HomePage() {
   const { matches, loading, error } = useScoreboard('eng.1')
   const { articles, error: newsError } = useSportsNews('eng.1')
+  const liveMatches = matches.filter((match) => match.state === 'in')
 
   return (
     <div className="space-y-10 pb-10">
@@ -122,12 +123,14 @@ function HomePage() {
             <div className="mb-5 flex items-center justify-between">
               <div>
                 <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Featured</p>
-                <p className="mt-2 text-xl font-semibold text-white">Global Live Feed</p>
+                <p className="mt-2 text-xl font-semibold text-white">Premier League scores</p>
               </div>
-              <span className="rounded-full bg-red-500/15 px-2.5 py-1 text-xs font-medium text-red-300">LIVE</span>
+              <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${liveMatches.length ? 'bg-red-500/15 text-red-300' : 'bg-slate-800 text-slate-300'}`}>
+                {liveMatches.length ? 'LIVE' : 'UPDATES'}
+              </span>
             </div>
             <div className="space-y-4">
-              {matches.filter((match) => match.state === 'in').slice(0, 3).map((match) => (
+              {liveMatches.slice(0, 3).map((match) => (
                 <div key={match.id} className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
                   <div className="mb-2 flex items-center justify-between text-xs uppercase tracking-[0.2em] text-slate-400">
                     <span>{match.competition}</span>
@@ -144,7 +147,7 @@ function HomePage() {
                   <div className="mt-3 text-xs text-sky-300">{match.minute}</div>
                 </div>
               ))}
-              {matches.filter((match) => match.state === 'in').length === 0 && (
+              {liveMatches.length === 0 && (
                 <p className="rounded-xl border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-300">
                   {error || (loading ? 'Loading live scores…' : 'No Premier League matches are live right now.')}
                 </p>
@@ -157,7 +160,7 @@ function HomePage() {
       <section>
         <SectionHeader eyebrow="Live sports" title="Match center" action="View all matches" to="/sports" />
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {matches.filter((match) => match.state === 'in').map((match) => (
+          {liveMatches.map((match) => (
             <div key={match.id} className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
               <div className="mb-3 flex items-center justify-between text-xs uppercase tracking-[0.18em] text-slate-400">
                 <span>{match.competition}</span>
@@ -180,7 +183,7 @@ function HomePage() {
             </div>
           ))}
         </div>
-        {matches.filter((match) => match.state === 'in').length === 0 && (
+        {liveMatches.length === 0 && (
           <p className="text-sm text-slate-400">{error || (loading ? 'Loading live scores…' : 'No matches are live right now.')}</p>
         )}
       </section>

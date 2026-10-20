@@ -82,7 +82,7 @@ export function Layout() {
           </div>
           <div>
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-300">Status</p>
-            <p className="text-sm text-slate-400">Demo data is clearly labeled and provider approvals are required before production use.</p>
+            <p className="text-sm text-slate-400">Live sports scores by ESPN. TV and radio streams are provided by their official broadcasters.</p>
           </div>
         </div>
       </footer>
